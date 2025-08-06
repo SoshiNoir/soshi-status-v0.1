@@ -87,7 +87,7 @@ export default function HomePage() {
                 isAwake ? 'text-green-400' : 'text-blue-400'
               } text-6xl sm:text-7xl md:text-9xl text-center`}
             >
-              {isAwake ? 'Sim!' : 'Não, está amimir.'}
+              {isAwake ? 'Sim, está acordado' : 'Não, está a mimir.'}
             </p>
             <div className='mt-8 w-full max-w-[200px] sm:max-w-sm md:max-w-md lg:max-w-lg aspect-square relative'>
               <Image
