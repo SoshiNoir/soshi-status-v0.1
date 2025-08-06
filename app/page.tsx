@@ -50,7 +50,7 @@ export default function HomePage() {
     <main className='flex min-h-screen flex-col items-center justify-center px-4 sm:px-8 py-8 max-w-full sm:max-w-md md:max-w-lg lg:max-w-xl mx-auto relative'>
       <div className='flex flex-col items-center space-y-8'>
         {isLoading ? (
-          <p className='text-2xl text-gray-400 text-center'>
+          <p className='text-1xl text-gray-400 text-center'>
             Verificando o estado do Soshi...
           </p>
         ) : isError ? (
@@ -59,7 +59,7 @@ export default function HomePage() {
           </p>
         ) : (
           <>
-            <h1 className='text-4xl sm:text-5xl md:text-6xl font-bold text-center'>
+            <h1 className='text-3xl sm:text-4xl md:text-5xl font-bold text-center'>
               Soshi está acordado?
             </h1>
             <p
