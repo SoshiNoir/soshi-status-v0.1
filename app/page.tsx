@@ -48,26 +48,6 @@ export default function HomePage() {
 
   return (
     <main className='flex min-h-screen flex-col items-center justify-center px-4 sm:px-8 py-8 max-w-full sm:max-w-md md:max-w-lg lg:max-w-xl mx-auto relative'>
-      <div className='absolute top-4 right-4 sm:relative sm:top-auto sm:right-auto sm:mb-4'>
-        {authStatus === 'loading' ? (
-          <span className='text-gray-400'>...</span>
-        ) : session ? (
-          <button
-            onClick={() => signOut()}
-            className='px-4 py-2 bg-red-600 rounded-md hover:bg-red-700 transition-colors text-sm sm:text-base'
-          >
-            Sair
-          </button>
-        ) : (
-          <button
-            onClick={() => signIn('github')}
-            className='px-4 py-2 bg-gray-700 rounded-md hover:bg-gray-600 transition-colors text-sm sm:text-base'
-          >
-            Admin Login
-          </button>
-        )}
-      </div>
-
       <div className='flex flex-col items-center space-y-8'>
         {isLoading ? (
           <p className='text-2xl text-gray-400 text-center'>
@@ -116,24 +96,44 @@ export default function HomePage() {
               checked={isAwake}
               onChange={handleToggle}
               disabled={mutation.isPending}
-              className={`${
+              className={`$${
                 isAwake ? 'bg-green-500' : 'bg-blue-600'
               } relative inline-flex h-6 w-11 items-center rounded-full transition-colors disabled:opacity-50`}
             >
               <span
-                className={`${
+                className={`$${
                   isAwake ? 'translate-x-6' : 'translate-x-1'
                 } inline-block h-4 w-4 transform rounded-full bg-white transition-transform`}
               />
             </Switch>
             <span
-              className={`${
+              className={`$${
                 isAwake ? 'text-green-400' : 'text-gray-500'
               } text-sm`}
             >
               Acordado
             </span>
           </div>
+        )}
+      </div>
+
+      <div className='mt-10 flex justify-center w-full'>
+        {authStatus === 'loading' ? (
+          <span className='text-gray-400'>...</span>
+        ) : session ? (
+          <button
+            onClick={() => signOut()}
+            className='px-4 py-2 bg-red-600 rounded-md hover:bg-red-700 transition-colors text-sm sm:text-base'
+          >
+            Sair
+          </button>
+        ) : (
+          <button
+            onClick={() => signIn('github')}
+            className='px-4 py-2 bg-gray-700 rounded-md hover:bg-gray-600 transition-colors text-sm sm:text-base'
+          >
+            Admin Login
+          </button>
         )}
       </div>
     </main>
