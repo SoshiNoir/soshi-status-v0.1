@@ -12,7 +12,7 @@ const handler = NextAuth({
   callbacks: {
     async signIn({ user }) {
       // Only allow sign-in if the user's email is the admin email
-      if (user.email === process.env.ADMIN_EMAIL) {
+      if (user.email === process.env.NEXT_PUBLIC_ADMIN_EMAIL) {
         return true;
       } else {
         // Return false to deny sign-in

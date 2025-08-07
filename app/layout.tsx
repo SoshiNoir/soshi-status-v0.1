@@ -1,7 +1,6 @@
 // app/layout.tsx
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
-import './globals.css';
 import Providers from './providers'; // Import the providers
 
 const inter = Inter({ subsets: ['latin'] });
@@ -18,7 +17,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang='en'>
-      <body className={`${inter.className} bg-gray-900 text-white`}>
+      <body
+        className={`${inter.className} bg-white text-gray-900 dark:bg-gray-900 dark:text-white`}
+      >
         {/* Wrap children with Providers */}
         <Providers>{children}</Providers>
       </body>
