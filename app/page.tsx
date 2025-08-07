@@ -159,7 +159,7 @@ export default function HomePage() {
           onClick={() => setEatExpanded(!eatExpanded)}
           className='w-full px-4 py-2 bg-gray-100 dark:bg-gray-700 text-left font-semibold text-gray-900 dark:text-gray-100 flex justify-between items-center'
         >
-          Comeu hoje?
+          Soshi comeu hoje?
           <span>{eatExpanded ? '▲' : '▼'}</span>
         </button>
         {eatExpanded && (

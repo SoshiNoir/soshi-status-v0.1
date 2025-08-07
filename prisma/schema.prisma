@@ -10,7 +10,8 @@ datasource db {
 // Our model to store the status
 model Status {
   id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
   isAwake   Boolean
   hasEaten  Boolean
-  createdAt DateTime @default(now())
+  hasDrunk  Boolean
 }
