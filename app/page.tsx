@@ -16,27 +16,29 @@ const fetchStatus = async (): Promise<StatusData> => {
 };
 
 const updateAwakeStatus = async (isAwake: boolean): Promise<void> => {
-  await fetch('/api/status/awake', {
+  const res = await fetch('/api/status/awake', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ isAwake }),
   });
+  if (!res.ok) throw new Error('Failed to update status');
 };
 
 const updateEatStatus = async (hasEaten: boolean): Promise<void> => {
-  await fetch('/api/status/eat', {
+  const res = await fetch('/api/status/eat', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ hasEaten }),
   });
+  if (!res.ok) throw new Error('Failed to update status');
 };
 
 export default function HomePage() {
   const [isDark, setIsDark] = useDarkMode();
   const [mounted, setMounted] = useState(false);
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+
+  useEffect(() => setMounted(true), []);
+
   const { data: session, status: authStatus } = useSession();
   const qc = useQueryClient();
   const { data, isLoading, isError } = useQuery<StatusData, Error>({
@@ -62,8 +64,12 @@ export default function HomePage() {
   const [eatExpanded, setEatExpanded] = useState(false);
 
   if (!mounted) return null;
-  if (isLoading) return <p className='text-gray-900'>Loading...</p>;
-  if (isError) return <p className='text-red-600'>Error loading status.</p>;
+  if (isLoading)
+    return <p className='text-gray-900 dark:text-gray-100'>Loading...</p>;
+  if (isError)
+    return (
+      <p className='text-red-600 dark:text-red-400'>Error loading status.</p>
+    );
 
   const renderSwitch = (
     checked: boolean,
@@ -74,7 +80,7 @@ export default function HomePage() {
       checked={checked}
       onChange={onChange}
       className={`${
-        checked ? 'bg-blue-600' : 'bg-gray-200'
+        checked ? 'bg-blue-600' : 'bg-gray-200 dark:bg-gray-600'
       } relative inline-flex h-6 w-12 items-center rounded-full transition-colors`}
     >
       <span className='sr-only'>{label}</span>
