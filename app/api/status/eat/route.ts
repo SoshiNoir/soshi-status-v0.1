@@ -1,3 +1,5 @@
+// src/app/api/status/eat/route.ts
+
 import prisma from '@/lib/prisma';
 import { getServerSession } from 'next-auth';
 import { NextResponse } from 'next/server';
@@ -15,14 +17,21 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: 'Entrada inválida' }, { status: 400 });
   }
 
-  // Find the latest status
   const latest = await prisma.status.findFirst({ orderBy: { createdAt: 'desc' } });
+
   if (!latest) {
-    // If no status exists, create one with both fields
-    const created = await prisma.status.create({ data: { hasEaten, isAwake: false } });
+    // Se não existe status, cria um com todos os campos
+    const created = await prisma.status.create({
+      data: {
+        hasEaten,
+        isAwake: false,
+        hasDrunk: false, // <<< AJUSTE AQUI
+      },
+    });
     return NextResponse.json(created);
   }
-  // Update only hasEaten, keep isAwake as is
+
+  // Atualiza apenas hasEaten
   const updated = await prisma.status.update({
     where: { id: latest.id },
     data: { hasEaten },
