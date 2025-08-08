@@ -19,7 +19,7 @@ export default function Header({
   onSignOut,
 }: HeaderProps) {
   return (
-    <div className='sticky top-0 z-10 w-full flex flex-col sm:flex-row items-center justify-end gap-2 p-4 bg-gray-100 dark:bg-gray-800'>
+    <div className='sticky top-0 z-10 w-full flex flex-row items-center justify-end gap-2 p-4 bg-gray-100 dark:bg-gray-800'>
       <button
         onClick={() => setIsDark((d) => !d)}
         className='px-2 py-1 rounded bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-100 border border-gray-300 dark:border-gray-600 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors text-xs sm:text-sm'
