@@ -46,9 +46,12 @@ export default function PlaylistsPage() {
     return <div className='text-center mt-10 text-red-500'>{error}</div>;
 
   const renderCard = (playlist: Playlist) => (
-    <div
+    <a
       key={playlist.id}
-      className='relative group w-[160px] aspect-square overflow-hidden rounded-lg shadow-md transition-all duration-300 cursor-pointer hover:z-50 hover:scale-[2.5] hover:origin-center'
+      href={playlist.external_urls.spotify}
+      target='_blank'
+      rel='noopener noreferrer'
+      className='relative group w-[160px] aspect-square overflow-hidden rounded-lg shadow-md transition-all duration-300 cursor-pointer hover:z-50 hover:scale-[2.5] hover:origin-center block'
     >
       <img
         src={playlist.images[0]?.url || '/default-playlist.png'}
@@ -66,7 +69,7 @@ export default function PlaylistsPage() {
           <p className='text-sm text-center'>{playlist.description}</p>
         )}
       </div>
-    </div>
+    </a>
   );
 
   return (
