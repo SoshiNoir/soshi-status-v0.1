@@ -14,9 +14,9 @@ type Playlist = {
 
 export default function PlaylistsPage() {
   const [playlists, setPlaylists] = useState<Playlist[]>([]);
+  const [savedPlaylists, setSavedPlaylists] = useState<Playlist[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
-  const [savedPlaylists, setSavedPlaylists] = useState<Playlist[]>([]);
 
   useEffect(() => {
     const fetchPlaylists = async () => {
@@ -26,16 +26,8 @@ export default function PlaylistsPage() {
         const allPlaylists: Playlist[] = await res.json();
 
         const creatorId = '22uv452vf26v4fxk7auekggyi';
-
-        const createdByMe = allPlaylists.filter(
-          (playlist) => playlist.owner.id === creatorId
-        );
-        const savedPlaylists = allPlaylists.filter(
-          (playlist) => playlist.owner.id !== creatorId
-        );
-
-        setPlaylists(createdByMe);
-        setSavedPlaylists(savedPlaylists);
+        setPlaylists(allPlaylists.filter((p) => p.owner.id === creatorId));
+        setSavedPlaylists(allPlaylists.filter((p) => p.owner.id !== creatorId));
       } catch (err) {
         setError((err as Error).message);
       } finally {
@@ -53,13 +45,13 @@ export default function PlaylistsPage() {
   if (error)
     return <div className='text-center mt-10 text-red-500'>{error}</div>;
 
-  const renderPlaylistCard = (playlist: Playlist) => (
+  const renderCard = (playlist: Playlist) => (
     <a
       key={playlist.id}
       href={playlist.external_urls.spotify}
       target='_blank'
       rel='noopener noreferrer'
-      className='group bg-white dark:bg-gray-800 rounded-md shadow hover:shadow-lg transition-shadow duration-300 overflow-hidden border border-gray-200 dark:border-gray-700 w-full max-w-[160px]'
+      className='group relative bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 border border-gray-200 dark:border-gray-700'
     >
       <div className='relative w-full aspect-square'>
         <Image
@@ -69,15 +61,15 @@ export default function PlaylistsPage() {
             e.currentTarget.onerror = null;
             e.currentTarget.src = '/default-playlist.png';
           }}
-          className='w-full h-full object-cover group-hover:scale-105 transition-transform duration-300'
+          className='w-full h-full object-cover transition-transform duration-300 group-hover:scale-105'
         />
       </div>
-      <div className='p-3'>
-        <h3 className='text-sm font-semibold text-gray-900 dark:text-white truncate'>
+      <div className='absolute inset-0 bg-black/70 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4'>
+        <h3 className='text-white text-sm font-semibold mb-1'>
           {playlist.name}
         </h3>
         {playlist.description && (
-          <p className='text-xs text-gray-600 dark:text-gray-300 mt-1 line-clamp-2'>
+          <p className='text-gray-200 text-xs line-clamp-none'>
             {playlist.description}
           </p>
         )}
@@ -87,19 +79,31 @@ export default function PlaylistsPage() {
 
   return (
     <div className='p-6'>
-      <h1 className='text-3xl font-bold mb-6'>Your Spotify Playlists</h1>
+      <h1 className='text-3xl font-bold mb-6 text-center'>
+        Your Spotify Playlists
+      </h1>
 
-      <section className='mb-10'>
-        <h2 className='text-xl font-semibold mb-4'>Created by Soshi</h2>
-        <div className='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6'>
-          {playlists.map(renderPlaylistCard)}
+      {/* 🎁 Soshi's Playlists Wrapped in a Card */}
+      <section className='mb-12 flex justify-center'>
+        <div className='bg-white dark:bg-gray-900 rounded-2xl shadow-lg border border-gray-300 dark:border-gray-700 p-6 w-full max-w-6xl'>
+          <h2 className='text-2xl font-semibold mb-4 text-center text-gray-900 dark:text-white'>
+            Created by Soshi
+          </h2>
+          <div className='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6 justify-center'>
+            {playlists.map(renderCard)}
+          </div>
         </div>
       </section>
 
-      <section>
-        <h2 className='text-xl font-semibold mb-4'>Saved Playlists</h2>
-        <div className='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6'>
-          {savedPlaylists.map(renderPlaylistCard)}
+      {/* 📦 Saved Playlists Below */}
+      <section className='flex justify-center'>
+        <div className='w-full max-w-6xl'>
+          <h2 className='text-xl font-semibold mb-4 text-center text-gray-900 dark:text-white'>
+            Saved Playlists
+          </h2>
+          <div className='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6 justify-center'>
+            {savedPlaylists.map(renderCard)}
+          </div>
         </div>
       </section>
     </div>
