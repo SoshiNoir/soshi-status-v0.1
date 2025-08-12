@@ -18,7 +18,7 @@ export default function SwitchControl({
       checked={checked}
       onChange={onChange}
       className={`${
-        checked ? 'bg-blue-600' : 'bg-gray-200 dark:bg-gray-600'
+        checked ? 'bg-blue-600' : 'bg-gray-200'
       } relative inline-flex h-6 w-12 items-center rounded-full transition-colors`}
     >
       <span className='sr-only'>{label}</span>

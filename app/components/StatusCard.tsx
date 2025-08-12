@@ -35,7 +35,7 @@ export default function StatusCard({
     <div className='w-full max-w-md border rounded-lg shadow-md overflow-hidden bg-transparent'>
       <button
         onClick={onToggleExpand}
-        className='w-full px-4 py-2 bg-gray-200 dark:bg-gray-700 text-left font-extrabold text-gray-800 dark:text-gray-100 md:text-xl flex justify-between items-center drop-shadow'
+        className='w-full px-4 py-2 bg-gray-200 text-left font-extrabold text-gray-800 md:text-xl flex justify-between items-center drop-shadow'
       >
         {title}
         <span>{isExpanded ? '▲' : '▼'}</span>

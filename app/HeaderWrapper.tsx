@@ -1,13 +1,10 @@
-// app/HeaderWrapper.tsx
 'use client';
 
 import { signIn, signOut, useSession } from 'next-auth/react';
 import { useEffect, useState } from 'react';
 import Header from './components/Header';
-import useDarkMode from './useDarkMode';
 
 export default function HeaderWrapper() {
-  const [isDark, setIsDark] = useDarkMode();
   const { data: session, status: authStatus } = useSession();
   const [isSpotifyConnected, setIsSpotifyConnected] = useState(false);
 
@@ -27,8 +24,6 @@ export default function HeaderWrapper() {
 
   return (
     <Header
-      isDark={isDark}
-      setIsDark={setIsDark}
       authStatus={authStatus}
       session={session}
       onSignIn={() => signIn('github')}

@@ -4,8 +4,6 @@ import { Session } from 'next-auth';
 import Link from 'next/link';
 
 type HeaderProps = {
-  isDark: boolean;
-  setIsDark: (updater: (prev: boolean) => boolean) => void;
   authStatus: 'loading' | 'authenticated' | 'unauthenticated';
   session: Session | null;
   onSignIn: () => void;
@@ -14,8 +12,6 @@ type HeaderProps = {
 };
 
 export default function Header({
-  isDark,
-  setIsDark,
   authStatus,
   onSignIn,
   onSignOut,
@@ -24,31 +20,23 @@ export default function Header({
   const playlistLink = isSpotifyConnected ? '/playlists' : '/api/spotify-login';
 
   return (
-    <header className='sticky top-0 z-10 w-full bg-gray-100 dark:bg-gray-900 shadow-sm'>
+    <header className='sticky top-0 z-10 w-full bg-gray-900 shadow-sm'>
       <div className='max-w-screen-xl mx-auto flex items-center justify-between px-4 py-3 sm:px-6 sm:py-4'>
-        {/* Left: Theme toggle */}
-        <button
-          onClick={() => setIsDark((d) => !d)}
-          className='flex items-center gap-2 px-3 py-1 rounded-md bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-100 border border-gray-300 dark:border-gray-600 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors text-sm'
-          title={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
-        >
-          {isDark ? '🌙 Dark' : '☀️ Light'}
-        </button>
+        {/* Left: Brand or logo placeholder */}
+        <div className='text-white font-bold text-lg'>🎵 My App</div>
 
         {/* Center: Playlists link */}
         <Link
           href={playlistLink}
-          className='text-base sm:text-lg font-semibold text-green-700 dark:text-green-400 hover:underline transition-colors'
+          className='text-base sm:text-lg font-semibold text-green-400 hover:underline transition-colors'
         >
-          🎵 Playlists
+          Playlists
         </Link>
 
         {/* Right: Auth buttons */}
         <div className='flex-shrink-0'>
           {authStatus === 'loading' ? (
-            <span className='text-gray-600 dark:text-gray-300 text-sm'>
-              Carregando...
-            </span>
+            <span className='text-gray-300 text-sm'>Carregando...</span>
           ) : authStatus === 'authenticated' ? (
             <button
               onClick={onSignOut}
