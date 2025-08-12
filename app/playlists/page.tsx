@@ -1,9 +1,6 @@
-// app/playlists/page.tsx
-
 'use client';
 
 import Image from 'next/image';
-import { useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 type Playlist = {
@@ -14,25 +11,14 @@ type Playlist = {
 };
 
 export default function PlaylistsPage() {
-  const searchParams = useSearchParams();
-  const accessToken = searchParams.get('access_token');
-
   const [playlists, setPlaylists] = useState<Playlist[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
   useEffect(() => {
-    if (!accessToken) {
-      setError('No access token found.');
-      setLoading(false);
-      return;
-    }
-
     const fetchPlaylists = async () => {
       try {
-        const res = await fetch(
-          `/api/spotify-login/playlists?access_token=${accessToken}`
-        );
+        const res = await fetch('/api/spotify-login/playlists');
         if (!res.ok) throw new Error('Failed to fetch playlists');
         const data: Playlist[] = await res.json();
         setPlaylists(data);
@@ -44,7 +30,7 @@ export default function PlaylistsPage() {
     };
 
     fetchPlaylists();
-  }, [accessToken]);
+  }, []);
 
   if (loading)
     return (
@@ -68,6 +54,8 @@ export default function PlaylistsPage() {
             <Image
               src={playlist.images[0]?.url || '/default-playlist.png'}
               alt={playlist.name}
+              width={500}
+              height={300}
               className='w-full h-48 object-cover'
             />
             <div className='p-4'>
