@@ -24,42 +24,48 @@ export default function Header({
   const playlistLink = isSpotifyConnected ? '/playlists' : '/api/spotify-login';
 
   return (
-    <div className='sticky top-0 z-10 w-full flex items-center justify-between px-6 py-4 bg-gray-100 dark:bg-gray-800'>
-      {/* Left: Theme toggle */}
-      <button
-        onClick={() => setIsDark((d) => !d)}
-        className='px-2 py-1 rounded bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-100 border border-gray-300 dark:border-gray-600 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors text-xs sm:text-sm'
-        title={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
-      >
-        {isDark ? '🌙 Dark' : '☀️ Light'}
-      </button>
-
-      {/* Center: Playlists link */}
-      <Link
-        href={playlistLink}
-        className='text-lg font-semibold text-green-700 dark:text-green-400 hover:underline transition-colors'
-      >
-        🎵 Playlists
-      </Link>
-
-      {/* Right: Auth buttons */}
-      {authStatus === 'loading' ? (
-        <span className='text-gray-600 dark:text-gray-300'>...</span>
-      ) : authStatus === 'authenticated' ? (
+    <header className='sticky top-0 z-10 w-full bg-gray-100 dark:bg-gray-900 shadow-sm'>
+      <div className='max-w-screen-xl mx-auto flex items-center justify-between px-4 py-3 sm:px-6 sm:py-4'>
+        {/* Left: Theme toggle */}
         <button
-          onClick={onSignOut}
-          className='bg-red-600 text-white px-4 py-2 rounded shadow hover:bg-red-700 transition-colors'
+          onClick={() => setIsDark((d) => !d)}
+          className='flex items-center gap-2 px-3 py-1 rounded-md bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-100 border border-gray-300 dark:border-gray-600 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors text-sm'
+          title={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
         >
-          Sair
+          {isDark ? '🌙 Dark' : '☀️ Light'}
         </button>
-      ) : (
-        <button
-          onClick={onSignIn}
-          className='bg-gray-800 text-white px-4 py-2 rounded shadow hover:bg-gray-700 transition-colors'
+
+        {/* Center: Playlists link */}
+        <Link
+          href={playlistLink}
+          className='text-base sm:text-lg font-semibold text-green-700 dark:text-green-400 hover:underline transition-colors'
         >
-          Admin Login
-        </button>
-      )}
-    </div>
+          🎵 Playlists
+        </Link>
+
+        {/* Right: Auth buttons */}
+        <div className='flex-shrink-0'>
+          {authStatus === 'loading' ? (
+            <span className='text-gray-600 dark:text-gray-300 text-sm'>
+              Carregando...
+            </span>
+          ) : authStatus === 'authenticated' ? (
+            <button
+              onClick={onSignOut}
+              className='bg-red-600 text-white px-3 py-1.5 rounded-md shadow hover:bg-red-700 transition-colors text-sm'
+            >
+              Sair
+            </button>
+          ) : (
+            <button
+              onClick={onSignIn}
+              className='bg-gray-800 text-white px-3 py-1.5 rounded-md shadow hover:bg-gray-700 transition-colors text-sm'
+            >
+              Admin Login
+            </button>
+          )}
+        </div>
+      </div>
+    </header>
   );
 }
