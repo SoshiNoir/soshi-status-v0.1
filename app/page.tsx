@@ -3,7 +3,6 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { signIn, signOut, useSession } from 'next-auth/react';
 import { useEffect, useState } from 'react';
-import Header from './components/Header';
 import StatusCard from './components/StatusCard';
 import useDarkMode from './useDarkMode';
 
@@ -106,16 +105,6 @@ export default function HomePage() {
 
   return (
     <main className='relative min-h-screen p-4 flex flex-col items-center space-y-8 bg-gray-100 dark:bg-gray-900 dark:text-gray-100'>
-      <Header
-        isDark={isDark}
-        setIsDark={setIsDark}
-        authStatus={authStatus}
-        session={session}
-        onSignIn={() => signIn('github')}
-        onSignOut={() => signOut()}
-        isSpotifyConnected={isSpotifyConnected}
-      />
-
       <StatusCard
         title='Soshi está acordado?'
         isExpanded={expandedCard === 'awake'}
