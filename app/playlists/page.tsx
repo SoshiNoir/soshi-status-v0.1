@@ -48,9 +48,8 @@ export default function PlaylistsPage() {
   const renderCard = (playlist: Playlist) => (
     <div
       key={playlist.id}
-      className='relative group w-[160px] aspect-square overflow-hidden rounded-lg shadow-lg transition-all duration-500 cursor-pointer'
+      className='relative group w-[160px] aspect-square overflow-hidden rounded-lg shadow-md transition-all duration-300 cursor-pointer hover:z-50 hover:scale-[2.5] hover:origin-center'
     >
-      {/* Base Image */}
       <img
         src={playlist.images[0]?.url || '/default-playlist.png'}
         alt={playlist.name}
@@ -58,19 +57,15 @@ export default function PlaylistsPage() {
           e.currentTarget.onerror = null;
           e.currentTarget.src = '/default-playlist.png';
         }}
-        className='w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.5] group-hover:z-50 group-hover:rounded-xl'
+        className='w-full h-full object-cover rounded-lg'
       />
 
-      {/* Expanded Overlay */}
-      <div className='absolute inset-0 bg-black/70 opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-50 flex flex-col justify-center items-center text-white p-4'>
-        <h2 className='text-xl font-bold mb-2 text-center'>{playlist.name}</h2>
+      <div className='absolute inset-0 bg-black/70 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-center items-center text-white p-4'>
+        <h2 className='text-lg font-bold text-center mb-2'>{playlist.name}</h2>
         {playlist.description && (
           <p className='text-sm text-center'>{playlist.description}</p>
         )}
       </div>
-
-      {/* Expansion Effect */}
-      <div className='absolute inset-0 transition-all duration-500 group-hover:scale-[5] group-hover:z-40 group-hover:rounded-xl'></div>
     </div>
   );
 
