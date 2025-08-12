@@ -46,11 +46,11 @@ export default function PlaylistsPage() {
     return <div className='text-center mt-10 text-red-500'>{error}</div>;
 
   const renderCard = (playlist: Playlist) => (
-    <button
+    <div
       key={playlist.id}
-      onClick={() => setActivePlaylist(playlist)}
-      className='group relative bg-white dark:bg-gray-800 rounded-lg overflow-hidden shadow hover:shadow-lg transition-all duration-300 border border-gray-200 dark:border-gray-700 w-[160px] aspect-square'
+      className='relative group w-[160px] aspect-square overflow-hidden rounded-lg shadow-lg transition-all duration-500 cursor-pointer'
     >
+      {/* Base Image */}
       <img
         src={playlist.images[0]?.url || '/default-playlist.png'}
         alt={playlist.name}
@@ -58,9 +58,20 @@ export default function PlaylistsPage() {
           e.currentTarget.onerror = null;
           e.currentTarget.src = '/default-playlist.png';
         }}
-        className='w-full h-full object-cover transition-transform duration-300 group-hover:scale-105'
+        className='w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.5] group-hover:z-50 group-hover:rounded-xl'
       />
-    </button>
+
+      {/* Expanded Overlay */}
+      <div className='absolute inset-0 bg-black/70 opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-50 flex flex-col justify-center items-center text-white p-4'>
+        <h2 className='text-xl font-bold mb-2 text-center'>{playlist.name}</h2>
+        {playlist.description && (
+          <p className='text-sm text-center'>{playlist.description}</p>
+        )}
+      </div>
+
+      {/* Expansion Effect */}
+      <div className='absolute inset-0 transition-all duration-500 group-hover:scale-[5] group-hover:z-40 group-hover:rounded-xl'></div>
+    </div>
   );
 
   return (
