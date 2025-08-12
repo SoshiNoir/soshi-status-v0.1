@@ -4,10 +4,10 @@ import clsx from 'clsx';
 import { ButtonHTMLAttributes } from 'react';
 
 type NavButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
-  color?: string; // text color
-  border?: string; // border color
-  hoverBg?: string; // background on hover
-  hoverText?: string; // text color on hover
+  color?: string;
+  border?: string;
+  hoverBg?: string;
+  hoverText?: string;
 };
 
 export default function NavButton({
