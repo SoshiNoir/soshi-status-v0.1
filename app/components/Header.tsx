@@ -2,6 +2,7 @@
 
 import { Session } from 'next-auth';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import NavButton from './NavButton';
 
@@ -22,6 +23,7 @@ export default function Header(props: HeaderProps) {
     () => (isSpotifyConnected ? '/playlists' : '/api/spotify-login'),
     [isSpotifyConnected]
   );
+  const router = useRouter();
 
   // Lock scroll when menu is open
   useEffect(() => {
@@ -54,18 +56,31 @@ export default function Header(props: HeaderProps) {
             className='flex items-center gap-2 text-white font-semibold text-lg hover:text-green-400 transition-colors'
             aria-label='Home'
           >
-            <span className='text-xl'>🏠</span>
+            <span className='text-xl'>Home</span>
             <span className='hidden sm:inline'>Home</span>
           </Link>
 
           {/* Right: Desktop inline nav */}
           <nav className='hidden md:flex items-center gap-4'>
-            <Link
-              href={playlistLink}
-              className='text-green-400 hover:text-green-300 font-medium transition-colors'
+            <NavButton
+              onClick={() => router.push('/')}
+              color='text-white'
+              border='border-gray-500'
+              hoverBg='hover:bg-gray-800'
+              hoverText='hover:text-green-400'
             >
-              🎵 Playlists
-            </Link>
+              Home
+            </NavButton>
+
+            <NavButton
+              onClick={() => router.push(playlistLink)}
+              color='text-green-400'
+              border='border-green-500'
+              hoverBg='hover:bg-green-600'
+              hoverText='hover:text-white'
+            >
+              Playlists
+            </NavButton>
 
             {authStatus === 'loading' ? (
               <span className='text-gray-300 text-sm'>Carregando...</span>
