@@ -1,5 +1,5 @@
 module.exports = {
-  darkMode: 'class', // enables dark mode via class
+  darkMode: 'class',
   content: [
     './app/**/*.{ts,tsx}',
     './components/**/*.{ts,tsx}',
