@@ -51,23 +51,33 @@ export default function PlaylistsPage() {
       href={playlist.external_urls.spotify}
       target='_blank'
       rel='noopener noreferrer'
-      className='relative group w-[160px] aspect-square overflow-hidden rounded-lg shadow-md transition-all duration-300 cursor-pointer hover:z-50 hover:scale-[2.5] hover:origin-center block'
+      className='group block w-full max-w-2xl mx-auto rounded-xl overflow-hidden shadow-lg bg-white dark:bg-gray-800 transition-all duration-300 hover:shadow-2xl hover:scale-[1.02] md:w-[160px] md:aspect-square md:hover:scale-[2.5] md:hover:z-50 md:hover:origin-center'
     >
-      <img
-        src={playlist.images[0]?.url || '/default-playlist.png'}
-        alt={playlist.name}
-        onError={(e) => {
-          e.currentTarget.onerror = null;
-          e.currentTarget.src = '/default-playlist.png';
-        }}
-        className='w-full h-full object-cover rounded-lg transition duration-300 group-hover:brightness-[0.4]'
-      />
+      <div className='flex md:block'>
+        {/* Image */}
+        <div className='w-24 h-24 md:w-full md:h-full relative shrink-0'>
+          <img
+            src={playlist.images[0]?.url || '/default-playlist.png'}
+            alt={playlist.name}
+            onError={(e) => {
+              e.currentTarget.onerror = null;
+              e.currentTarget.src = '/default-playlist.png';
+            }}
+            className='w-full h-full object-cover rounded-l-xl md:rounded-lg transition duration-300 group-hover:brightness-[0.4]'
+          />
+        </div>
 
-      <div className='absolute inset-0 flex flex-col justify-center items-center text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300 p-4'>
-        <h2 className='text-lg font-bold text-center mb-2'>{playlist.name}</h2>
-        {playlist.description && (
-          <p className='text-sm text-center'>{playlist.description}</p>
-        )}
+        {/* Text Overlay (mobile) */}
+        <div className='flex flex-col justify-center px-4 py-2 md:absolute md:inset-0 md:opacity-0 md:group-hover:opacity-100 md:text-white md:p-4'>
+          <h2 className='text-base font-bold mb-1 md:text-lg'>
+            {playlist.name}
+          </h2>
+          {playlist.description && (
+            <p className='text-sm text-gray-600 dark:text-gray-300 md:text-white'>
+              {playlist.description}
+            </p>
+          )}
+        </div>
       </div>
     </a>
   );
