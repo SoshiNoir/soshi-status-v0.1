@@ -21,20 +21,26 @@ export default function Header({
 
   return (
     <header className='sticky top-0 z-10 w-full bg-gray-900 shadow-sm'>
-      <div className='max-w-screen-xl mx-auto flex items-center justify-between px-4 py-3 sm:px-6 sm:py-4'>
-        {/* Left: Brand or logo placeholder */}
-        <div className='text-white font-bold text-lg'>🎵 My App</div>
+      <div className='max-w-screen-xl mx-auto flex flex-wrap items-center justify-between gap-3 px-4 py-3 sm:px-6 sm:py-4'>
+        {/* Left: Home Button */}
+        <Link
+          href='/'
+          className='flex items-center gap-2 text-white font-bold text-lg hover:text-green-400 transition-colors'
+        >
+          <span className='text-xl'>🏠</span>
+          <span className='hidden sm:inline'>Home</span>
+        </Link>
 
         {/* Center: Playlists link */}
         <Link
           href={playlistLink}
-          className='text-base sm:text-lg font-semibold text-green-400 hover:underline transition-colors'
+          className='order-last sm:order-none text-base sm:text-lg font-semibold text-green-400 hover:text-green-300 transition-colors'
         >
-          Playlists
+          🎵 Playlists
         </Link>
 
         {/* Right: Auth buttons */}
-        <div className='flex-shrink-0'>
+        <div className='flex-shrink-0 flex gap-2'>
           {authStatus === 'loading' ? (
             <span className='text-gray-300 text-sm'>Carregando...</span>
           ) : authStatus === 'authenticated' ? (
