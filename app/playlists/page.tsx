@@ -21,7 +21,7 @@ export default function PlaylistsPage() {
   useEffect(() => {
     const fetchPlaylists = async () => {
       try {
-        const res = await fetch('/api/spotify-login/playlists');
+        const res = await fetch('/api/soshi/playlists');
         if (!res.ok) throw new Error('Failed to fetch playlists');
         const allPlaylists: Playlist[] = await res.json();
 
