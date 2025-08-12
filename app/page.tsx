@@ -50,7 +50,26 @@ export default function HomePage() {
   const { data: session, status: authStatus } = useSession();
   const qc = useQueryClient();
 
-  useEffect(() => setMounted(true), []);
+  const [isSpotifyConnected, setIsSpotifyConnected] = useState(false);
+  const [expandedCard, setExpandedCard] = useState<
+    'awake' | 'eat' | 'drink' | null
+  >('awake');
+
+  useEffect(() => {
+    setMounted(true);
+
+    const checkSpotifyConnection = async () => {
+      try {
+        const res = await fetch('/api/spotify-login/status');
+        const data = await res.json();
+        setIsSpotifyConnected(data.isConnected);
+      } catch (err) {
+        console.error('Failed to check Spotify connection', err);
+      }
+    };
+
+    checkSpotifyConnection();
+  }, []);
 
   const { data, isLoading, isError } = useQuery<StatusData, Error>({
     queryKey: ['soshiStatus'],
@@ -72,14 +91,11 @@ export default function HomePage() {
     onSuccess: () => qc.invalidateQueries({ queryKey: ['soshiStatus'] }),
   });
 
-  const [expandedCard, setExpandedCard] = useState<
-    'awake' | 'eat' | 'drink' | null
-  >('awake');
-
   if (!mounted) return null;
 
   const isAwake = data?.isAwake ?? false;
   const hasEaten = data?.hasEaten ?? false;
+  const hasDrunk = data?.hasDrunk ?? false;
   const isAdmin = session?.user?.email === process.env.NEXT_PUBLIC_ADMIN_EMAIL;
 
   if (isLoading)
@@ -98,6 +114,7 @@ export default function HomePage() {
         session={session}
         onSignIn={() => signIn('github')}
         onSignOut={() => signOut()}
+        isSpotifyConnected={isSpotifyConnected}
       />
 
       <StatusCard
@@ -108,7 +125,7 @@ export default function HomePage() {
         }
         status={isAwake}
         textYes='Sim, Soshi está acordado.'
-        textNo={'Não, Soshi está a mimir.'}
+        textNo='Não, Soshi está a mimir.'
         imageYes='/acordado.png'
         imageNo='/amimir.png'
         isAdmin={isAdmin}
@@ -124,7 +141,7 @@ export default function HomePage() {
         }
         status={hasEaten}
         textYes='Sim, Soshi comeu.'
-        textNo={'Não, Soshi não comeu.'}
+        textNo='Não, Soshi não comeu.'
         imageYes='/comeu.gif'
         imageNo='/naocomeu.png'
         isAdmin={isAdmin}
@@ -138,13 +155,13 @@ export default function HomePage() {
         onToggleExpand={() =>
           setExpandedCard(expandedCard === 'drink' ? null : 'drink')
         }
-        status={data?.hasDrunk ?? false}
+        status={hasDrunk}
         textYes='Sim, Soshi tomou cerveja.'
-        textNo={'Não, Soshi não tomou cerveja.'}
+        textNo='Não, Soshi não tomou cerveja.'
         imageYes='/tomou.jpg'
         imageNo='/naotomou.jpg'
         isAdmin={isAdmin}
-        onToggleStatus={() => drinkMutation.mutate(!data?.hasDrunk)}
+        onToggleStatus={() => drinkMutation.mutate(!hasDrunk)}
         switchLabel='Toggle drink status'
       />
     </main>
