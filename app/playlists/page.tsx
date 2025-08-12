@@ -57,10 +57,10 @@ export default function PlaylistsPage() {
           e.currentTarget.onerror = null;
           e.currentTarget.src = '/default-playlist.png';
         }}
-        className='w-full h-full object-cover rounded-lg'
+        className='w-full h-full object-cover rounded-lg transition duration-300 group-hover:brightness-[0.4]'
       />
 
-      <div className='absolute inset-0 bg-black/70 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-center items-center text-white p-4'>
+      <div className='absolute inset-0 flex flex-col justify-center items-center text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300 p-4'>
         <h2 className='text-lg font-bold text-center mb-2'>{playlist.name}</h2>
         {playlist.description && (
           <p className='text-sm text-center'>{playlist.description}</p>
