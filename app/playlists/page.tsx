@@ -101,16 +101,16 @@ export default function PlaylistsPage() {
             <Image
               src={playlist.images[0]?.url || '/default-playlist.png'}
               alt={playlist.name}
-              width={500}
-              height={300}
-              className='w-full h-48 object-cover'
+              width={300}
+              height={180}
+              className='w-full h-36 object-cover'
             />
-            <div className='p-4'>
-              <h2 className='text-lg font-semibold text-gray-900 dark:text-white mb-2'>
+            <div className='p-3'>
+              <h2 className='text-md font-semibold text-gray-900 dark:text-white mb-1'>
                 {playlist.name}
               </h2>
               {playlist.description && (
-                <p className='text-sm text-gray-600 dark:text-gray-300 line-clamp-3'>
+                <p className='text-xs text-gray-600 dark:text-gray-300 line-clamp-2'>
                   {playlist.description}
                 </p>
               )}
