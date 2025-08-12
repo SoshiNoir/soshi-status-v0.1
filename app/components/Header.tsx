@@ -71,14 +71,14 @@ export default function Header(props: HeaderProps) {
             ) : authStatus === 'authenticated' ? (
               <button
                 onClick={onSignOut}
-                className='bg-red-600 text-white px-3 py-1.5 rounded-md shadow hover:bg-red-700 transition-colors text-sm'
+                className='px-4 py-1.5 border border-red-500 text-red-400 rounded-full hover:bg-red-600 hover:text-white transition-colors text-sm font-medium'
               >
                 Sair
               </button>
             ) : (
               <button
                 onClick={onSignIn}
-                className='bg-gray-800 text-white px-3 py-1.5 rounded-md shadow hover:bg-gray-700 transition-colors text-sm'
+                className='px-4 py-1.5 border border-green-500 text-green-400 rounded-full hover:bg-green-600 hover:text-white transition-colors text-sm font-medium'
               >
                 Admin Login
               </button>
