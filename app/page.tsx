@@ -81,11 +81,11 @@ export default function HomePage() {
   const hasDrunk = data?.hasDrunk ?? false;
   const isAdmin = session?.user?.email === process.env.NEXT_PUBLIC_ADMIN_EMAIL;
 
-  if (isLoading) return <p className='text-gray-900'>Loading...</p>;
-  if (isError) return <p className='text-red-600'>Error loading status.</p>;
+  if (isLoading) return <p className='text-gray-300'>Loading...</p>;
+  if (isError) return <p className='text-red-400'>Error loading status.</p>;
 
   return (
-    <main className='relative min-h-screen p-4 flex flex-col items-center space-y-8 bg-gray-100'>
+    <main className='relative min-h-screen p-4 flex flex-col items-center space-y-8 bg-gray-900 text-white'>
       <StatusCard
         title='Soshi está acordado?'
         isExpanded={expandedCard === 'awake'}
