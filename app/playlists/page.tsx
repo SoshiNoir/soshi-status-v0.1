@@ -59,22 +59,25 @@ export default function PlaylistsPage() {
       href={playlist.external_urls.spotify}
       target='_blank'
       rel='noopener noreferrer'
-      className='group bg-white dark:bg-gray-800 rounded-lg shadow hover:shadow-lg transition-shadow duration-300 overflow-hidden border border-gray-200 dark:border-gray-700'
+      className='group bg-white dark:bg-gray-800 rounded-md shadow hover:shadow-lg transition-shadow duration-300 overflow-hidden border border-gray-200 dark:border-gray-700 w-full max-w-[160px]'
     >
       <div className='relative w-full aspect-square'>
         <Image
           src={playlist.images[0]?.url || '/default-playlist.png'}
           alt={playlist.name}
-          fill
-          className='object-cover group-hover:scale-105 transition-transform duration-300'
+          onError={(e) => {
+            e.currentTarget.onerror = null;
+            e.currentTarget.src = '/default-playlist.png';
+          }}
+          className='w-full h-full object-cover group-hover:scale-105 transition-transform duration-300'
         />
       </div>
-      <div className='p-4'>
-        <h3 className='text-base font-semibold text-gray-900 dark:text-white truncate'>
+      <div className='p-3'>
+        <h3 className='text-sm font-semibold text-gray-900 dark:text-white truncate'>
           {playlist.name}
         </h3>
         {playlist.description && (
-          <p className='text-sm text-gray-600 dark:text-gray-300 mt-1 line-clamp-2'>
+          <p className='text-xs text-gray-600 dark:text-gray-300 mt-1 line-clamp-2'>
             {playlist.description}
           </p>
         )}
