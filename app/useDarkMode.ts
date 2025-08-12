@@ -2,19 +2,13 @@
 import { useEffect, useState } from 'react';
 
 export default function useDarkMode() {
-  const [isDark, setIsDark] = useState<boolean>(true); // inicia como dark
-
-  useEffect(() => {
-    const saved = localStorage.getItem('theme');
-    if (saved === 'light') {
-      setIsDark(false);
-      document.documentElement.classList.remove('dark');
-    } else {
-      // padrão dark
-      setIsDark(true);
-      document.documentElement.classList.add('dark');
+  const [isDark, setIsDark] = useState<boolean>(() => {
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('theme');
+      return saved === 'light' ? false : true;
     }
-  }, []);
+    return true;
+  });
 
   useEffect(() => {
     if (isDark) {
