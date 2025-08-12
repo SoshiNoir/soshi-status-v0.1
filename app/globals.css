@@ -1,7 +1,19 @@
-@import 'tailwindcss';
+@import 'tailwindcss/preflight';
+@tailwind utilities;
 
-@custom-variant dark (&:where(.dark, .dark *));
+/* 🌍 Global styles */
+html {
+  scroll-behavior: smooth;
+}
 
 body {
   font-family: Arial, Helvetica, sans-serif;
+  background-color: white;
+  color: #111;
+
+  /* Dark mode support */
+  @media (prefers-color-scheme: dark) {
+    background-color: #111;
+    color: white;
+  }
 }
