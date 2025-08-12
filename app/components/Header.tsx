@@ -142,7 +142,7 @@ export default function Header(props: HeaderProps) {
               hoverBg='hover:bg-gray-800'
               hoverText='hover:text-green-400'
             >
-              🏠 Home
+              Home
             </NavButton>
 
             <button

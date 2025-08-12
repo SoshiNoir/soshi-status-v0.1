@@ -49,7 +49,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang='en' className='scroll-smooth'>
+    <html lang='pt-br' className='scroll-smooth'>
       <body
         className={`${inter.className} scroll-smooth bg-gray-900 text-white`}
       >
