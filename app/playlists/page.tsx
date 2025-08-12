@@ -14,6 +14,7 @@ type Playlist = {
 export default function PlaylistsPage() {
   const [playlists, setPlaylists] = useState<Playlist[]>([]);
   const [savedPlaylists, setSavedPlaylists] = useState<Playlist[]>([]);
+  const [activePlaylist, setActivePlaylist] = useState<Playlist | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
@@ -45,33 +46,21 @@ export default function PlaylistsPage() {
     return <div className='text-center mt-10 text-red-500'>{error}</div>;
 
   const renderCard = (playlist: Playlist) => (
-    <a
+    <button
       key={playlist.id}
-      href={playlist.external_urls.spotify}
-      target='_blank'
-      rel='noopener noreferrer'
-      className='group relative bg-white dark:bg-gray-800 rounded-lg overflow-hidden shadow hover:shadow-lg transition-all duration-300 border border-gray-200 dark:border-gray-700 w-[140px] sm:w-[150px] md:w-[160px] lg:w-[170px]'
+      onClick={() => setActivePlaylist(playlist)}
+      className='group relative bg-white dark:bg-gray-800 rounded-lg overflow-hidden shadow hover:shadow-lg transition-all duration-300 border border-gray-200 dark:border-gray-700 w-[160px] aspect-square'
     >
-      <div className='relative w-full h-[170px] overflow-hidden'>
-        <img
-          src={playlist.images[0]?.url || '/default-playlist.png'}
-          alt={playlist.name}
-          onError={(e) => {
-            e.currentTarget.onerror = null;
-            e.currentTarget.src = '/default-playlist.png';
-          }}
-          className='w-full h-full object-cover transition-transform duration-300 group-hover:scale-105'
-        />
-      </div>
-      <div className='absolute inset-0 bg-black/70 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-3'>
-        <h3 className='text-white text-sm font-semibold mb-1'>
-          {playlist.name}
-        </h3>
-        {playlist.description && (
-          <p className='text-gray-200 text-xs'>{playlist.description}</p>
-        )}
-      </div>
-    </a>
+      <img
+        src={playlist.images[0]?.url || '/default-playlist.png'}
+        alt={playlist.name}
+        onError={(e) => {
+          e.currentTarget.onerror = null;
+          e.currentTarget.src = '/default-playlist.png';
+        }}
+        className='w-full h-full object-cover transition-transform duration-300 group-hover:scale-105'
+      />
+    </button>
   );
 
   return (
@@ -103,6 +92,44 @@ export default function PlaylistsPage() {
           </div>
         </div>
       </section>
+
+      {/* 🖼️ Fullscreen Modal */}
+      {activePlaylist && (
+        <div
+          className='fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-6'
+          onClick={() => setActivePlaylist(null)}
+        >
+          <div className='bg-white dark:bg-gray-900 rounded-xl shadow-lg max-w-md w-full overflow-hidden'>
+            <img
+              src={activePlaylist.images[0]?.url || '/default-playlist.png'}
+              alt={activePlaylist.name}
+              onError={(e) => {
+                e.currentTarget.onerror = null;
+                e.currentTarget.src = '/default-playlist.png';
+              }}
+              className='w-full h-64 object-cover'
+            />
+            <div className='p-4'>
+              <h2 className='text-xl font-bold text-gray-900 dark:text-white mb-2'>
+                {activePlaylist.name}
+              </h2>
+              {activePlaylist.description && (
+                <p className='text-sm text-gray-700 dark:text-gray-300'>
+                  {activePlaylist.description}
+                </p>
+              )}
+              <a
+                href={activePlaylist.external_urls.spotify}
+                target='_blank'
+                rel='noopener noreferrer'
+                className='mt-4 inline-block text-blue-600 dark:text-blue-400 hover:underline text-sm'
+              >
+                Open in Spotify →
+              </a>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
