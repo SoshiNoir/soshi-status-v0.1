@@ -1,94 +1,138 @@
 'use client';
 
-import Image from 'next/image';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useSession } from 'next-auth/react';
+import { useEffect, useState } from 'react';
+import StatusCard from './components/StatusCard';
 
-type StatusCardProps = {
-  title: string;
-  isExpanded: boolean;
-  onToggleExpand: () => void;
-  status: boolean;
-  textYes: string;
-  textNo: string;
-  imageYes: string;
-  imageNo: string;
-  isAdmin?: boolean;
-  onToggleStatus?: () => void;
-  switchLabel?: string;
+export type StatusData = {
+  isAwake: boolean;
+  hasEaten: boolean;
+  hasDrunk: boolean;
 };
 
-export default function StatusCard({
-  title,
-  isExpanded,
-  onToggleExpand,
-  status,
-  textYes,
-  textNo,
-  imageYes,
-  imageNo,
-  isAdmin = false,
-  onToggleStatus,
-  switchLabel = 'Toggle status',
-}: StatusCardProps) {
+const fetchStatus = async (): Promise<StatusData> => {
+  const res = await fetch('/api/status');
+  if (!res.ok) throw new Error('Failed to fetch status');
+  return res.json();
+};
+
+const updateAwakeStatus = async (isAwake: boolean): Promise<void> => {
+  await fetch('/api/status/awake', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ isAwake }),
+  });
+};
+
+const updateEatStatus = async (hasEaten: boolean): Promise<void> => {
+  await fetch('/api/status/eat', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ hasEaten }),
+  });
+};
+
+const updateDrinkStatus = async (hasDrunk: boolean): Promise<void> => {
+  await fetch('/api/status/drink', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ hasDrunk }),
+  });
+};
+
+export default function HomePage() {
+  const [mounted, setMounted] = useState(false);
+  const { data: session } = useSession();
+  const qc = useQueryClient();
+
+  const [expandedCard, setExpandedCard] = useState<
+    'awake' | 'eat' | 'drink' | null
+  >('awake');
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  const { data, isLoading, isError } = useQuery<StatusData, Error>({
+    queryKey: ['soshiStatus'],
+    queryFn: fetchStatus,
+  });
+
+  const awakeMutation = useMutation<void, Error, boolean>({
+    mutationFn: updateAwakeStatus,
+    onSuccess: () => qc.invalidateQueries({ queryKey: ['soshiStatus'] }),
+  });
+
+  const eatMutation = useMutation<void, Error, boolean>({
+    mutationFn: updateEatStatus,
+    onSuccess: () => qc.invalidateQueries({ queryKey: ['soshiStatus'] }),
+  });
+
+  const drinkMutation = useMutation<void, Error, boolean>({
+    mutationFn: updateDrinkStatus,
+    onSuccess: () => qc.invalidateQueries({ queryKey: ['soshiStatus'] }),
+  });
+
+  if (!mounted) return null;
+
+  const isAwake = data?.isAwake ?? false;
+  const hasEaten = data?.hasEaten ?? false;
+  const hasDrunk = data?.hasDrunk ?? false;
+  const isAdmin = session?.user?.email === process.env.NEXT_PUBLIC_ADMIN_EMAIL;
+
+  if (isLoading) return <p className='text-gray-300'>Loading...</p>;
+  if (isError) return <p className='text-red-400'>Error loading status.</p>;
+
   return (
-    <section className='status-card w-full max-w-2xl rounded-lg bg-gray-900/80 ring-1 ring-gray-800 backdrop-blur-sm shadow-md overflow-hidden'>
-      {/* Header */}
-      <button
-        type='button'
-        onClick={onToggleExpand}
-        className='w-full flex items-center justify-between px-4 py-3 sm:px-5 sm:py-4 text-left'
-        aria-expanded={isExpanded}
-      >
-        <h2 className='text-white text-lg sm:text-xl font-semibold'>{title}</h2>
-        <span
-          className='ml-3 inline-flex h-7 w-7 items-center justify-center rounded-md bg-gray-800 text-gray-200 ring-1 ring-gray-700'
-          aria-hidden='true'
-        >
-          {isExpanded ? '▾' : '▸'}
-        </span>
-      </button>
+    <main className='relative min-h-screen p-4 flex flex-col items-center space-y-8 bg-gray-900 text-white'>
+      <StatusCard
+        title='Soshi está acordado?'
+        isExpanded={expandedCard === 'awake'}
+        onToggleExpand={() =>
+          setExpandedCard(expandedCard === 'awake' ? null : 'awake')
+        }
+        status={isAwake}
+        textYes='Sim, Soshi está acordado.'
+        textNo='Não, Soshi está a mimir.'
+        imageYes='/acordado.png'
+        imageNo='/amimir.png'
+        isAdmin={isAdmin}
+        onToggleStatus={() => awakeMutation.mutate(!isAwake)}
+        switchLabel='Toggle awake status'
+      />
 
-      {/* Divider */}
-      <div className='h-px bg-gray-800' />
+      <StatusCard
+        title='Soshi comeu hoje?'
+        isExpanded={expandedCard === 'eat'}
+        onToggleExpand={() =>
+          setExpandedCard(expandedCard === 'eat' ? null : 'eat')
+        }
+        status={hasEaten}
+        textYes='Sim, Soshi comeu.'
+        textNo='Não, Soshi não comeu.'
+        imageYes='/comeu.gif'
+        imageNo='/naocomeu.png'
+        isAdmin={isAdmin}
+        onToggleStatus={() => eatMutation.mutate(!hasEaten)}
+        switchLabel='Toggle eaten status'
+      />
 
-      {/* Content (dropdown) */}
-      {isExpanded && (
-        <div className='px-4 py-4 sm:px-5 sm:py-5 bg-gray-900'>
-          <div className='flex flex-col sm:flex-row sm:items-center gap-4'>
-            <div className='flex-1'>
-              <p className='text-gray-200'>{status ? textYes : textNo}</p>
-
-              {isAdmin && onToggleStatus && (
-                <div className='mt-4'>
-                  <button
-                    onClick={onToggleStatus}
-                    className='inline-flex items-center gap-2 rounded-md bg-gray-800 text-gray-100 px-3 py-1.5 text-sm ring-1 ring-gray-700 hover:bg-gray-700 hover:text-white transition-colors'
-                    aria-label={switchLabel}
-                  >
-                    <span
-                      className='text-xs h-2 w-2 rounded-full'
-                      style={{
-                        backgroundColor: status ? '#22c55e' : '#ef4444',
-                      }}
-                    />
-                    {status ? 'Marcar como não' : 'Marcar como sim'}
-                  </button>
-                </div>
-              )}
-            </div>
-
-            <div className='flex-shrink-0 overflow-hidden rounded-md ring-1 ring-gray-800'>
-              {/* Use next/image if your paths are static and public */}
-              <Image
-                src={status ? imageYes : imageNo}
-                alt=''
-                width={160}
-                height={160}
-                className='object-cover bg-gray-800'
-              />
-            </div>
-          </div>
-        </div>
-      )}
-    </section>
+      <StatusCard
+        title='Soshi tomou cerveja?'
+        isExpanded={expandedCard === 'drink'}
+        onToggleExpand={() =>
+          setExpandedCard(expandedCard === 'drink' ? null : 'drink')
+        }
+        status={hasDrunk}
+        textYes='Sim, Soshi tomou cerveja.'
+        textNo='Não, Soshi não tomou cerveja.'
+        imageYes='/tomou.jpg'
+        imageNo='/naotomou.jpg'
+        isAdmin={isAdmin}
+        onToggleStatus={() => drinkMutation.mutate(!hasDrunk)}
+        switchLabel='Toggle drink status'
+      />
+    </main>
   );
 }
