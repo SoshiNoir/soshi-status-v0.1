@@ -3,6 +3,7 @@
 import { Session } from 'next-auth';
 import Link from 'next/link';
 import { useEffect, useMemo, useRef, useState } from 'react';
+import NavButton from './NavButton';
 
 type HeaderProps = {
   authStatus: 'loading' | 'authenticated' | 'unauthenticated';
@@ -69,19 +70,25 @@ export default function Header(props: HeaderProps) {
             {authStatus === 'loading' ? (
               <span className='text-gray-300 text-sm'>Carregando...</span>
             ) : authStatus === 'authenticated' ? (
-              <button
+              <NavButton
                 onClick={onSignOut}
-                className='px-4 py-1.5 border border-red-500 text-red-400 rounded-full hover:bg-red-600 hover:text-white transition-colors text-sm font-medium'
+                color='text-red-400'
+                border='border-red-500'
+                hoverBg='hover:bg-red-600'
+                hoverText='hover:text-white'
               >
                 Sair
-              </button>
+              </NavButton>
             ) : (
-              <button
+              <NavButton
                 onClick={onSignIn}
-                className='px-4 py-1.5 border border-green-500 text-green-400 rounded-full hover:bg-green-600 hover:text-white transition-colors text-sm font-medium'
+                color='text-green-400'
+                border='border-green-500'
+                hoverBg='hover:bg-green-600'
+                hoverText='hover:text-white'
               >
                 Admin Login
-              </button>
+              </NavButton>
             )}
           </nav>
 
