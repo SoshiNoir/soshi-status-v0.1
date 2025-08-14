@@ -1,16 +1,17 @@
 'use client';
 
+import { signIn, signOut, useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import NavButton from './NavButton';
 
 export default function Header() {
+  const { data: session, status: authStatus } = useSession();
   const [open, setOpen] = useState(false);
   const firstLinkRef = useRef<HTMLButtonElement | null>(null);
   const router = useRouter();
 
   const playlistLink = '/playlists';
-  const adminLink = '/admin'; // ou qualquer rota que você queira
 
   useEffect(() => {
     document.body.classList.toggle('overflow-hidden', open);
@@ -57,15 +58,29 @@ export default function Header() {
               Playlists
             </NavButton>
 
-            <NavButton
-              onClick={() => router.push(adminLink)}
-              color='text-green-400'
-              border='border-green-500'
-              hoverBg='hover:bg-green-600'
-              hoverText='hover:text-white'
-            >
-              Admin Login
-            </NavButton>
+            {authStatus === 'loading' ? (
+              <span className='text-gray-300 text-sm'>Carregando...</span>
+            ) : authStatus === 'authenticated' ? (
+              <NavButton
+                onClick={() => signOut()}
+                color='text-red-400'
+                border='border-red-500'
+                hoverBg='hover:bg-red-600'
+                hoverText='hover:text-white'
+              >
+                Sair
+              </NavButton>
+            ) : (
+              <NavButton
+                onClick={() => signIn('github')}
+                color='text-green-400'
+                border='border-green-500'
+                hoverBg='hover:bg-green-600'
+                hoverText='hover:text-white'
+              >
+                Admin Login
+              </NavButton>
+            )}
           </nav>
 
           {/* Burger menu */}
@@ -138,18 +153,35 @@ export default function Header() {
               Playlists
             </NavButton>
 
-            <NavButton
-              onClick={() => {
-                closeMenu();
-                router.push(adminLink);
-              }}
-              color='text-green-400'
-              border='border-green-500'
-              hoverBg='hover:bg-green-600'
-              hoverText='hover:text-white'
-            >
-              Admin Login
-            </NavButton>
+            {authStatus === 'loading' ? (
+              <span className='text-gray-300 text-sm'>Carregando...</span>
+            ) : authStatus === 'authenticated' ? (
+              <NavButton
+                onClick={() => {
+                  closeMenu();
+                  signOut();
+                }}
+                color='text-red-400'
+                border='border-red-500'
+                hoverBg='hover:bg-red-600'
+                hoverText='hover:text-white'
+              >
+                Sair
+              </NavButton>
+            ) : (
+              <NavButton
+                onClick={() => {
+                  closeMenu();
+                  signIn('github');
+                }}
+                color='text-green-400'
+                border='border-green-500'
+                hoverBg='hover:bg-green-600'
+                hoverText='hover:text-white'
+              >
+                Admin Login
+              </NavButton>
+            )}
           </div>
 
           <div className='pb-4 flex items-center justify-center gap-6 text-gray-400 text-sm'>
