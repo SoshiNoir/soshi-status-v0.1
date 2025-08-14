@@ -10,6 +10,7 @@ export default function Header() {
   const router = useRouter();
 
   const playlistLink = '/playlists';
+  const adminLink = '/admin'; // ou qualquer rota que você queira
 
   useEffect(() => {
     document.body.classList.toggle('overflow-hidden', open);
@@ -54,6 +55,16 @@ export default function Header() {
               hoverText='hover:text-white'
             >
               Playlists
+            </NavButton>
+
+            <NavButton
+              onClick={() => router.push(adminLink)}
+              color='text-green-400'
+              border='border-green-500'
+              hoverBg='hover:bg-green-600'
+              hoverText='hover:text-white'
+            >
+              Admin Login
             </NavButton>
           </nav>
 
@@ -125,6 +136,19 @@ export default function Header() {
               }}
             >
               Playlists
+            </NavButton>
+
+            <NavButton
+              onClick={() => {
+                closeMenu();
+                router.push(adminLink);
+              }}
+              color='text-green-400'
+              border='border-green-500'
+              hoverBg='hover:bg-green-600'
+              hoverText='hover:text-white'
+            >
+              Admin Login
             </NavButton>
           </div>
 
