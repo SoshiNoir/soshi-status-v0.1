@@ -8,11 +8,9 @@ export async function GET() {
   });
 
   try {
-    // Get access token using Client Credentials Flow
     const { body } = await spotifyApi.clientCredentialsGrant();
     spotifyApi.setAccessToken(body.access_token);
 
-    // Fetch playlists from Soshi's public profile
     const userId = "22uv452vf26v4fxk7auekggyi";
     const playlistsData = await spotifyApi.getUserPlaylists(userId);
 
