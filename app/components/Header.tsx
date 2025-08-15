@@ -59,7 +59,7 @@ export default function Header(props: HeaderProps) {
 
           {/* Right: Desktop nav */}
           <nav className='hidden md:flex items-center gap-4'>
-            <NavButton
+            {/* <NavButton
               onClick={() => router.push(playlistLink)}
               color='text-green-400'
               border='border-green-500'
@@ -67,7 +67,7 @@ export default function Header(props: HeaderProps) {
               hoverText='hover:text-white'
             >
               Playlists
-            </NavButton>
+            </NavButton> */}
 
             {authStatus === 'loading' ? (
               <span className='text-gray-300 text-sm'>Carregando...</span>
