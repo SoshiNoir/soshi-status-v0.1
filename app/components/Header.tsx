@@ -1,28 +1,17 @@
 'use client';
 
-import { Session } from 'next-auth';
+import { signIn, signOut, useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import NavButton from './NavButton';
 
-type HeaderProps = {
-  authStatus: 'loading' | 'authenticated' | 'unauthenticated';
-  session: Session | null;
-  onSignIn: () => void;
-  onSignOut: () => void;
-  isSpotifyConnected: boolean;
-};
-
-export default function Header(props: HeaderProps) {
-  const { authStatus, onSignIn, onSignOut, isSpotifyConnected } = props;
+export default function Header() {
+  const { data: session, status: authStatus } = useSession();
   const [open, setOpen] = useState(false);
   const firstLinkRef = useRef<HTMLButtonElement | null>(null);
   const router = useRouter();
 
-  const playlistLink = useMemo(
-    () => (isSpotifyConnected ? '/playlists' : '/api/spotify-login'),
-    [isSpotifyConnected]
-  );
+  const playlistLink = '/playlists';
 
   useEffect(() => {
     document.body.classList.toggle('overflow-hidden', open);
@@ -73,7 +62,7 @@ export default function Header(props: HeaderProps) {
               <span className='text-gray-300 text-sm'>Carregando...</span>
             ) : authStatus === 'authenticated' ? (
               <NavButton
-                onClick={onSignOut}
+                onClick={() => signOut()}
                 color='text-red-400'
                 border='border-red-500'
                 hoverBg='hover:bg-red-600'
@@ -83,7 +72,7 @@ export default function Header(props: HeaderProps) {
               </NavButton>
             ) : (
               <NavButton
-                onClick={onSignIn}
+                onClick={() => signIn('github')}
                 color='text-green-400'
                 border='border-green-500'
                 hoverBg='hover:bg-green-600'
@@ -170,7 +159,7 @@ export default function Header(props: HeaderProps) {
               <NavButton
                 onClick={() => {
                   closeMenu();
-                  onSignOut();
+                  signOut();
                 }}
                 color='text-red-400'
                 border='border-red-500'
@@ -183,7 +172,7 @@ export default function Header(props: HeaderProps) {
               <NavButton
                 onClick={() => {
                   closeMenu();
-                  onSignIn();
+                  signIn('github');
                 }}
                 color='text-green-400'
                 border='border-green-500'
