@@ -11,8 +11,6 @@ export default function Header() {
   const firstLinkRef = useRef<HTMLButtonElement | null>(null);
   const router = useRouter();
 
-  const playlistLink = '/playlists';
-
   useEffect(() => {
     document.body.classList.toggle('overflow-hidden', open);
     return () => document.body.classList.remove('overflow-hidden');
@@ -48,16 +46,6 @@ export default function Header() {
 
           {/* Right: Desktop nav */}
           <nav className='hidden md:flex items-center gap-4'>
-            {/* <NavButton
-              onClick={() => router.push(playlistLink)}
-              color='text-green-400'
-              border='border-green-500'
-              hoverBg='hover:bg-green-600'
-              hoverText='hover:text-white'
-            >
-              Playlists
-            </NavButton> */}
-
             {authStatus === 'loading' ? (
               <span className='text-gray-300 text-sm'>Carregando...</span>
             ) : authStatus === 'authenticated' ? (
@@ -144,15 +132,6 @@ export default function Header() {
           </div>
 
           <div className='flex-1 mt-10 flex flex-col items-center justify-center gap-6'>
-            <NavButton
-              onClick={() => {
-                closeMenu();
-                router.push(playlistLink);
-              }}
-            >
-              Playlists
-            </NavButton>
-
             {authStatus === 'loading' ? (
               <span className='text-gray-300 text-sm'>Carregando...</span>
             ) : authStatus === 'authenticated' ? (
